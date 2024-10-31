@@ -2,9 +2,9 @@
  * request 网络请求工具
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
-import {extend} from 'umi-request';
-import {message} from "antd";
-import {history} from "@@/core/history";
+import { history } from '@@/core/history';
+import { message } from 'antd';
+import { extend } from 'umi-request';
 
 /**
  * 配置request请求时的默认参数
@@ -33,16 +33,22 @@ request.interceptors.request.use((url, options): any => {
 request.interceptors.response.use(async (response, options): Promise<any> => {
   const res = await response.clone().json();
 
+  if (res.code === 0) {
+    return res.data;
+  }
+
   if (res.code === 40100) {
     message.error('请先登录');
     // 重定向
     if (!history) return;
-    const {search} = history.location;
+    const { search } = history.location;
     const query = new URLSearchParams(search);
     history.push({
       pathname: '/user/login',
       search: query.toString(),
     });
+  } else {
+    message.error(res.description);
   }
 
   return res.data;

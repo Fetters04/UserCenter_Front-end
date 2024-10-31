@@ -60,9 +60,9 @@ const Register: React.FC = () => {
 
     try {
       // 注册
-      const res = await register(values);
+      const id = await register(values);
 
-      if (res.code === 0 && res.data > 0) {
+      if (id) {
         const defaultRegisterSuccessMessage = '注册成功！';
         message.success(defaultRegisterSuccessMessage);
 
@@ -74,10 +74,7 @@ const Register: React.FC = () => {
           pathname: '/user/login',
           search: query.toString(),
         });
-
         return;
-      } else {
-        throw new Error(res.description);
       }
     } catch (error: any) {
       const defaultRegisterFailureMessage = '注册失败，请重试！';

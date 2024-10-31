@@ -96,7 +96,7 @@ const Login: React.FC = () => {
       message.error(defaultLoginFailureMessage);
     }
   };
-  const { status } = userLoginState;
+  const status = userLoginState ? userLoginState.status : null;
   return (
     <div className={styles.container}>
       <Helmet>
